@@ -10,18 +10,18 @@ fs.readFile('articles_data_part_14.json', 'utf8', (err, data) => {
     // Parse JSON data
     let jsonData = JSON.parse(data);
 
-    // Function to replace "distacart" only if it's not already "distacart.com"
-    const replaceWords = (text) => {
-        return text.replace(/\bdistacart\b(?!\.com)/g, 'distacart.com')
-                   .replace(/\bDistacart\b(?!\.com)/g, 'Distacart.com');
+    // Function to correct duplicate ".com"
+    const correctWords = (text) => {
+        return text.replace(/\bdistacart\.com\.com\b/g, 'distacart.com')
+                   .replace(/\bDistacart\.com\.com\b/g, 'Distacart.com');
     };
 
     // Update the JSON content
     jsonData = jsonData.map(item => {
         return {
             ...item,
-            title: replaceWords(item.title),
-            description: replaceWords(item.description)
+            title: correctWords(item.title),
+            description: correctWords(item.description)
         };
     });
 
@@ -31,6 +31,6 @@ fs.readFile('articles_data_part_14.json', 'utf8', (err, data) => {
             console.error('Error writing file:', err);
             return;
         }
-        console.log('File successfully updated!');
+        console.log('File successfully corrected!');
     });
 });
